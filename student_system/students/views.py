@@ -9,6 +9,8 @@ from .models import Student
 def create_student(request):
     username = request.data.get("username")
     email = request.data.get("email")
+    mobile = request.data.get("mobile")
+    age = request.data.get("age")
     password = request.data.get("password")
     name = request.data.get("name")
     profile_photo = request.FILES.get("profile_photo")
@@ -39,6 +41,8 @@ def create_student(request):
         name=name,
         user=user, 
         email=email,
+        mobile=mobile,
+        age=age,
         profile_photo=profile_photo,
     )
 
@@ -46,6 +50,8 @@ def create_student(request):
         "id": student.id,
         "name": student.name,
         "email": student.email,
+        "mobile": student.mobile,
+        "age": student.age,
         "profile_photo": student.profile_photo.url
     }})
 
@@ -60,6 +66,8 @@ def student_list(request):
             "id": student.id,
             "name": student.name,
             "email": student.email,
+            "mobile": student.mobile,
+            "age": student.age,
             "profile_photo": student.profile_photo.url if student.profile_photo else None
         })
     return Response({"status": True, "data": data})
@@ -74,6 +82,8 @@ def student_detail(request, id):
             "id": student.id,
             "name": student.name,
             "email": student.user.email,
+            "mobile": student.mobile,
+            "age": student.age,
             "profile_photo": student.profile_photo.url if student.profile_photo else None
         }
 
@@ -91,6 +101,8 @@ def update_student(request, id):
 
         student.name = request.data.get("name", student.name)
         student.email = request.data.get("email", student.email)  
+        student.mobile = request.data.get("mobile", student.mobile)
+        student.age = request.data.get("age", student.age)
         student.user.email = request.data.get("email", student.user.email)
 
         if request.FILES.get("profile_photo"):
@@ -110,8 +122,16 @@ def delete_student(request, id):
     try:
         student = Student.objects.get(id=id)
         user = student.user
+
+        if user == request.user:
+         return Response({
+                "status": False,
+                "message": "Cannot delete your own account while logged in"
+            }, status=400)
+        
         student.delete()
         user.delete()
+        
         return Response({"status": True, "message": "Student deleted successfully"})
     except Student.DoesNotExist:
         return Response({"status": False, "message": "Student not found"})

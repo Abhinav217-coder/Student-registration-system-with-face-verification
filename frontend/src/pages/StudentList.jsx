@@ -11,7 +11,7 @@ function StudentList() {
     const fetchStudents = async () => {
       try {
         const response = await API.get("students/list/");
-        setStudents(response.data.data);
+         setStudents(response.data.data|| []);
       } catch (err) {
         setError("Failed to load students.");
       }
@@ -35,6 +35,11 @@ function StudentList() {
       <center><h1>All Students</h1></center>
       <br></br>
       {error && <p style={{color:"red"}}>{error}</p>}
+        {students.length === 0 && !error && (
+        <p style={{ color: "#aaa", textAlign: "center" }}>
+          No students found. Create one!
+        </p>
+      )}
       {students.map((student) => (
         <div key={student.id} style={{borderBottom:"1px solid #ddd", marginBottom:10}}>
 
@@ -52,6 +57,8 @@ function StudentList() {
            <div>
       <h4>Name: {student.name}</h4>
       <h4>Email: {student.email}</h4>
+      <h4>Mobile: {student.mobile}</h4>
+      <h4>Age: {student.age}</h4>
       <button onClick={() => navigate(`/update-student/${student.id}`)}>Update</button>
       <button onClick={() => handleDelete(student.id)}
     style={{ padding: "6px 12px", marginTop: 8, width: "100%", background: "red" }}>Delete</button>

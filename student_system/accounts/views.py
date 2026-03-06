@@ -12,6 +12,8 @@ def register(request):
     username = request.data.get('username')
     password = request.data.get('password')
     email = request.data.get('email')
+    mobile = request.data.get("mobile")
+    age = request.data.get("age")
     profile_photo = request.FILES.get('profile_photo')
 
     if not username or not password:
@@ -47,6 +49,8 @@ def register(request):
         user=user,
         name=username,
         email=email,
+        mobile = mobile,
+        age = age,
         profile_photo=profile_photo,
         face_encoding=face_encoding
     )

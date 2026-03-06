@@ -13,6 +13,8 @@ function CreateStudent(){
     const[photo , setPhoto] = useState(null);
     const[sucess , setSucess] = useState("");
     const[error , setError] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [age, setAge] = useState("");
 
 
     const handlecreate = async () => {
@@ -20,6 +22,8 @@ function CreateStudent(){
         formdata.append("username",username)
         formdata.append("name" ,name)
         formdata.append("email" ,email)
+        formdata.append("mobile", mobile);
+        formdata.append("age", age);
         formdata.append("password" ,password)
         formdata.append("profile_photo" ,photo)
        
@@ -51,14 +55,22 @@ function CreateStudent(){
     <input placeholder="username" onChange={(e) => setUsername(e.target.value)}/>
     <br /><br />
 
+    <input placeholder="name" onChange={(e) => setName(e.target.value)}/>
+    <br /><br />
+
     <input placeholder="email" onChange={(e) => setEmail(e.target.value)}/>
+    <br /><br />
+
+    <input placeholder="Mobile Number" onChange={(e) => setMobile(e.target.value)} />
+    <br /><br />
+
+     <input type="number" placeholder="Age" onChange={(e) => setAge(e.target.value)} />
     <br /><br />
 
      <input placeholder="password" onChange={(e) => setPassword(e.target.value)}/>
     <br /><br />
 
-    <input placeholder="name" onChange={(e) => setName(e.target.value)}/>
-    <br /><br />
+ 
 
 
     <label>Profile Photo:</label>

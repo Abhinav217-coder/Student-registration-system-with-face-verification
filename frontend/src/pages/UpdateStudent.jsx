@@ -12,6 +12,8 @@ function UpdateStudent(){
     const[error , setError] = useState("");
     const[sucess , setSucess] = useState("");
     const [photo , setPhoto] = useState(null);
+    const [mobile, setMobile] = useState("");
+    const [age, setAge] = useState("");
 
 
 useEffect(() => {
@@ -21,6 +23,8 @@ useEffect(() => {
             const response = await API.get(`students/${id}/`);
             setName(response.data.data.name)
             setEmail(response.data.data.email)
+            setMobile(response.data.data.mobile || "");
+            setAge(response.data.data.age || "");
         }
         catch(err){
              
@@ -36,6 +40,9 @@ const Updatehandle = async ()=> {
     const formdata = new FormData();
     formdata.append("name" , name)
     formdata.append("email" , email)
+    formdata.append("mobile", mobile);
+    formdata.append("age", age);
+    
     if (photo){
         formdata.append("profile_photo", photo);
     }
@@ -58,6 +65,12 @@ const Updatehandle = async ()=> {
          <br /><br />
         <input placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
          <br /><br />
+
+        <input placeholder="Mobile Number" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+            <br /><br />
+
+        <input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} />
+            <br /><br />
 
          <label>Profile Photo (optional):</label>
       <input
