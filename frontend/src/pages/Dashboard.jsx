@@ -10,8 +10,8 @@ function Dashboard() {
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      <p>Welcome! Face verification sucess!!!</p>
+      <center><h2>Dashboard</h2></center>
+      <h3>Welcome Face verification sucess!!!</h3>
 
       <button onClick={() => navigate("/students")}>View All Students</button>
       <br /><br />

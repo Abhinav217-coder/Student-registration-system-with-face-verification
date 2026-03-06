@@ -32,21 +32,26 @@ function StudentList() {
 
   return (
     <div>
-      <h2>All Students</h2>
+      <center><h1>All Students</h1></center>
+      <br></br>
       {error && <p style={{color:"red"}}>{error}</p>}
       {students.map((student) => (
         <div key={student.id} style={{borderBottom:"1px solid #ddd", marginBottom:10}}>
 
-          <img 
-      src={`http://127.0.0.1:8000${student.profile_photo}`} 
+         <img src={`http://127.0.0.1:8000${student.profile_photo}`}
       alt={student.name}
-      style={{width:60, height:60, borderRadius:"50%", objectFit:"cover"}}
+
+      style={{  width: 200,      
+    height: 200,         
+    borderRadius: 10,    
+    objectFit: "cover",
+    marginBottom: 10}}
     />
 
 
            <div>
-      <p>Name: {student.name}</p>
-      <p>Email: {student.email}</p>
+      <h4>Name: {student.name}</h4>
+      <h4>Email: {student.email}</h4>
       <button onClick={() => navigate(`/update-student/${student.id}`)}>Update</button>
       <button onClick={() => handleDelete(student.id)}
     style={{ padding: "6px 12px", marginTop: 8, width: "100%", background: "red" }}>Delete</button>

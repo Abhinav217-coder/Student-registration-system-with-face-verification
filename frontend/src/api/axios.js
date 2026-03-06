@@ -7,7 +7,6 @@ const API = axios.create({
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   
-  // Don't add token for login and register
   const publicRoutes = ["accounts/login/", "accounts/register/"];
   const isPublicRoute = publicRoutes.some(route => config.url.includes(route));
   

@@ -26,10 +26,15 @@ function CreateStudent(){
 
         try{
            const response = await API.post("students/create/" , formdata)
-             console.log(response.data) 
-            setSucess("Student created sucessfully");
+           console.log(response.data); 
+             if (response.data.status === true) {
+                setSucess("Student created sucessfully");
             navigate("/students")
-        }catch(err){
+                }
+            else {
+
+                setError(response.data.message);
+            }}catch(err){
 
             setError("creation failed");
           
