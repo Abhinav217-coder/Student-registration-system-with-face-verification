@@ -2,7 +2,9 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from deepface import DeepFace
 from .models import Student
+import json
 
 
 @api_view(['POST'])
@@ -28,6 +30,14 @@ def create_student(request):
     if User.objects.filter(username=username).exists():
       return Response({"status": False, "message": "Username already exists"})
     
+
+    student_temp = Student(profile_photo=profile_photo)
+    student_temp.profile_photo.save(profile_photo.name, profile_photo, save=False)
+    photo_path = student_temp.profile_photo.path
+
+
+  
+    
     
 
     user = User.objects.create_user(
@@ -45,6 +55,24 @@ def create_student(request):
         age=age,
         profile_photo=profile_photo,
     )
+
+    try:
+        embedding = DeepFace.represent(
+            img_path=photo_path,
+            model_name="Facenet",
+            enforce_detection=False
+        )
+        if len(embedding) > 1:
+            return Response({"status": False, "message": "Multiple faces detected"})
+        face_encoding = json.dumps(embedding)
+
+        student.face_encoding = json.dumps(embedding)
+        student.save()
+
+    except Exception as e:
+        student.delete()
+        user.delete()
+        return Response({"status": False, "message": f"No face detected: {str(e)}"})
 
     return Response({"status": True, "message": "Student created successfully", "data": {
         "id": student.id,
@@ -131,7 +159,7 @@ def delete_student(request, id):
         
         student.delete()
         user.delete()
-        
+
         return Response({"status": True, "message": "Student deleted successfully"})
     except Student.DoesNotExist:
         return Response({"status": False, "message": "Student not found"})
