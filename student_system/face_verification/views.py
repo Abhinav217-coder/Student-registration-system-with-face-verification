@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from deepface import DeepFace
 from students.models import Student
+from .models import Verification
 import json
 
 @api_view(['POST'])
@@ -34,8 +35,18 @@ def verify_face(request):
     confidence = max(0, min(confidence, 100))
 
     if result["verified"]:
+        Verification.objects.create(
+            user=request.user,
+            status=True,
+            confidence=confidence
+        )
         return Response({"status": True, "message": "Face verified" , "confidence": f"{confidence}%"})
     else:
+        Verification.objects.create(
+            user=request.user,
+            status=False,
+            confidence=confidence
+        )
         return Response({"status": False, "message": "Face does not match" , "confidence": f"{confidence}%"})
 
 

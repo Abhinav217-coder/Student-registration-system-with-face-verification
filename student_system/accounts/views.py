@@ -27,6 +27,13 @@ def register(request):
             model_name="Facenet",
             enforce_detection=True
         )
+
+        if len(embedding) > 1:
+         return Response({
+            "status": False,
+            "message": "Multiple faces detected."
+        }, status=400)
+
         face_encoding = json.dumps(embedding)
 
     except:
@@ -44,7 +51,7 @@ def register(request):
         face_encoding=face_encoding
     )
 
-    return Response({"Message": "Account create sucessfully"},status = 201)
+    return Response({"message": "Account create sucessfully"},status = 201)
 
 
 @api_view(['POST'])
