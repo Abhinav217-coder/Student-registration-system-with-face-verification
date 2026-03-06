@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from .models import Student
 
 
-
 @api_view(['POST'])
 def create_student(request):
     username = request.data.get("username")
@@ -27,6 +26,8 @@ def create_student(request):
     if User.objects.filter(username=username).exists():
       return Response({"status": False, "message": "Username already exists"})
     
+    
+
     user = User.objects.create_user(
     username=username,
     email=email,
@@ -38,10 +39,15 @@ def create_student(request):
         name=name,
         user=user, 
         email=email,
-        profile_photo=profile_photo
+        profile_photo=profile_photo,
     )
 
-    return Response({"status": True, "message": "Student created successfully", "data": {}})
+    return Response({"status": True, "message": "Student created successfully", "data": {
+        "id": student.id,
+        "name": student.name,
+        "email": student.email,
+        "profile_photo": student.profile_photo.url
+    }})
 
 
 
