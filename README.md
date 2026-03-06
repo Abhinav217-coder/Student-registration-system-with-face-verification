@@ -129,10 +129,10 @@ method
 endpoints
 description
 
-| GET |/api/students/list/| Get all students |
-| POST |/api/students/create/| Create new student |
-| GET |/api/students/<id>/| Get student detail |
-| PUT |/api/students/update/<id>/| Update student |
+| GET |/api/students/list/| Get all students | ,
+| POST |/api/students/create/| Create new student | , 
+| GET |/api/students/<id>/| Get student detail |, 
+| PUT |/api/students/update/<id>/| Update student | , 
 | DELETE |/api/students/<id>/delete/| Delete student |
 
 Face Verification
